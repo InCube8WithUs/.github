@@ -1,0 +1,42 @@
+---
+// BaseLayout - Main layout for all pages
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = 'Astro Ink Blog', description = 'A blog built with Astro' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+    <header class="border-b border-gray-200 dark:border-gray-800">
+      <nav class="max-w-4xl mx-auto px-4 py-6">
+        <div class="flex items-center justify-between">
+          <a href="/" class="text-2xl font-bold hover:text-gray-600 dark:hover:text-gray-400">
+            Astro Ink
+          </a>
+          <div class="flex gap-6">
+            <a href="/" class="hover:text-gray-600 dark:hover:text-gray-400">Strona główna</a>
+            <a href="/blog/" class="hover:text-gray-600 dark:hover:text-gray-400">Blog</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="border-t border-gray-200 dark:border-gray-800 mt-20">
+      <div class="max-w-4xl mx-auto px-4 py-6 text-center text-sm text-gray-600 dark:text-gray-400">
+        <p>© {new Date().getFullYear()} Astro Ink. Wszystkie prawa zastrzeżone.</p>
+      </div>
+    </footer>
+  </body>
+</html>

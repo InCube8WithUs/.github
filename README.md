@@ -27,9 +27,10 @@ npm run build && npm run preview
 - Przykładowy post: `src/content/posts/hello-world.md`.
 - Brak wymaganych pól (np. `date`) spowoduje błąd walidacji podczas budowania.
 
-## Motyw Astro Ink
-- Strona główna (`src/pages/index.astro`) próbuje użyć layoutu z pakietu `astro-ink`.
-- Jeżeli pakiet nie będzie dostępny, wyświetlany jest prosty fallback layout, aby dev-serwer działał.
+## Layout
+- Projekt używa własnego layoutu `BaseLayout` (`src/layouts/BaseLayout.astro`).
+- Layout zawiera nawigację, nagłówek i stopkę oraz stosuje style Tailwind CSS.
+- Wszystkie strony używają tego samego layoutu dla spójnego wyglądu.
 
 ## Obrazy
 - Zasoby statyczne dla okładek znajdują się w `src/assets/`.
