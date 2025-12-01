@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+// Try to use Astro Ink's default layout if the package is installed.
+// Fallback to a minimal built-in layout if import fails at runtime.
+let InkLayout: any = null;
+try {
+  // Some theme packages export components under different paths; adjust as needed if you change theme version.
+  // This dynamic import is ignored by Vite tree-shaking until resolved at runtime.
+  InkLayout = (await import('astro-ink')).default;
+} catch (e) {
+  InkLayout = null;
+}
+
+const posts = await getCollection('posts', (p) => !p.data.draft);
+console.log('[Home] Loaded posts:', posts.map(p => ({ slug: p.slug, ...p.data })));
+---
+
+{InkLayout ? (
+  // Use the theme’s layout if available
+  <InkLayout title="Astro Ink • Blog">
+    <section class="prose dark:prose-invert max-w-3xl mx-auto py-12">
+      <h1>Witaj w Astro Ink</h1>
+      <p>Poniżej znajdują się wykryte posty z kolekcji <code>posts</code>.</p>
+      <ul>
+        {posts.map((p) => (
+          <li>
+            <a href={`/${p.slug}/`}>{p.data.title}</a>
+            <span class="block text-sm text-gray-500">{new Date(p.data.date).toLocaleDateString()}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </InkLayout>
+) : (
+  // Minimal fallback layout to keep the dev server running even if theme isn’t installed yet
+  <html lang="pl">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Astro Ink (fallback)</title>
+    </head>
+    <body class="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+      <main class="prose dark:prose-invert max-w-3xl mx-auto py-12">
+        <h1>Witaj w Astro (fallback)</h1>
+        <p>Nie znaleziono pakietu <code>astro-ink</code>. Zainstaluj zależności, aby użyć motywu.</p>
+        <ul>
+          {posts.map((p) => (
+            <li>
+              <a href={`/${p.slug}/`}>{p.data.title}</a>
+              <span class="block text-sm text-gray-500">{new Date(p.data.date).toLocaleDateString()}</span>
+            </li>
+          ))}
+        </ul>
+      </main>
+    </body>
+  </html>
+)}
