@@ -8,7 +8,7 @@ interface Props {
   entry: CollectionEntry<'posts'>;
 }
 
-const { entry } = Astro.props as Props;
+const { entry } = Astro.props;
 const { title, date, tags = [], description } = entry.data;
 const formattedDate = new Date(date);
 const href = `/blog/${entry.slug}/`;
