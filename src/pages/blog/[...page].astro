@@ -15,7 +15,7 @@ export async function getStaticPaths({ paginate }) {
   });
 
   // Create paginated paths with page size 6
-  return paginate(posts, { pageSize: 6, params: { } });
+  return paginate(posts, { pageSize: 6 });
 }
 
 const { page } = Astro.props;
