@@ -1,0 +1,48 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import PostCard from '../../components/PostCard.astro';
+
+export async function getStaticPaths({ paginate }) {
+  const all = await getCollection('posts', (p) => {
+    // Hide drafts only in production builds
+    const hideDraft = import.meta.env.PROD ? !p.data.draft : true;
+    return hideDraft;
+  });
+
+  // Sort newest first by date
+  const posts = all.sort((a: CollectionEntry<'posts'>, b: CollectionEntry<'posts'>) => {
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+  });
+
+  // Create paginated paths with page size 6
+  return paginate(posts, { pageSize: 6, params: { } });
+}
+
+const { page } = Astro.props;
+---
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blog — Strona {page.currentPage}</title>
+  </head>
+  <body class="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+    <main class="max-w-4xl mx-auto px-4 py-10">
+      <h1 class="text-3xl font-bold mb-6">Najnowsze wpisy</h1>
+
+      <div class="grid gap-6 md:grid-cols-2">
+        {page.data.map((entry) => <PostCard entry={entry} />)}
+      </div>
+
+      <nav class="flex items-center justify-between mt-10">
+        {page.url.prev ? (
+          <a href={page.url.prev} rel="prev" class="px-4 py-2 rounded border hover:bg-gray-50 dark:hover:bg-gray-800">← Poprzednia</a>
+        ) : <span />}
+        <span class="text-sm text-gray-500">Strona {page.currentPage} z {page.lastPage}</span>
+        {page.url.next ? (
+          <a href={page.url.next} rel="next" class="px-4 py-2 rounded border hover:bg-gray-50 dark:hover:bg-gray-800">Następna →</a>
+        ) : <span />}
+      </nav>
+    </main>
+  </body>
+</html>
