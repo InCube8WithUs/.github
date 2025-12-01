@@ -6,13 +6,20 @@ import mdx from '@astrojs/mdx';
 // For now we rely on its components/layouts and Tailwind styles.
 
 export default defineConfig({
-  site: 'http://localhost:4321',
+  site: 'https://incube8withus.github.io',
   integrations: [tailwind({ applyBaseStyles: true }), mdx()],
   markdown: {
     shikiConfig: {
       themes: {
         light: 'github-light',
         dark: 'github-dark'
+      }
+    }
+  },
+  vite: {
+    build: {
+      rollupOptions: {
+        external: ['astro-ink']
       }
     }
   }
