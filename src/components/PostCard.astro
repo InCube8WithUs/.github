@@ -10,14 +10,15 @@ interface Props {
 
 const { entry } = Astro.props as Props;
 const { title, date, tags = [], description } = entry.data;
+const formattedDate = new Date(date);
 const href = `/blog/${entry.slug}/`;
 ---
 <article class="border rounded-lg p-4 hover:shadow-sm transition-shadow">
   <h2 class="text-xl font-semibold leading-tight">
     <a href={href} class="hover:underline">{title}</a>
   </h2>
-  <time datetime={new Date(date).toISOString()} class="block text-sm text-gray-500">
-    {new Date(date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' })}
+  <time datetime={formattedDate.toISOString()} class="block text-sm text-gray-500">
+    {formattedDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' })}
   </time>
   {tags?.length ? (
     <ul class="flex flex-wrap gap-2 my-2">
