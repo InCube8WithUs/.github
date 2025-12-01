@@ -4,7 +4,7 @@ import PostCard from '../../components/PostCard.astro';
 
 export async function getStaticPaths({ paginate }) {
   const all = await getCollection('posts', (p) => {
-    // Hide drafts only in production builds
+    // In development, show all posts (including drafts); in production, hide drafts
     const hideDraft = import.meta.env.PROD ? !p.data.draft : true;
     return hideDraft;
   });
